@@ -10,10 +10,12 @@ public class BankAccountMain
 	private static final double MIN_BAL_FEE = 10;
 	private static final double FREE_TRANSACTIONS = 10;
 	
+	private static Scanner in;
+	
 	public static void main(String[] args) 
 	{
 		ArrayList<BankAccount> bank = new ArrayList<BankAccount>();
-		Scanner in = new Scanner(System.in);
+		in = new Scanner(System.in);
 		
 		while (true)
 		{
@@ -23,23 +25,8 @@ public class BankAccountMain
 			switch (answer)
 			{
 			case "r":
-				boolean register = true;
-				while(register)
-				{
-				System.out.println("Would you like to register a checking account(c) or savings account(s)");
-				String answer1 =  in.nextLine();
-				switch(answer1)
-				{
-					case "c":
-					register = false;
-					break;
-					
-				case "s":
-					register = false;
-					break;
-				}
+				registerAccount();
 				break;
-				}
 			case "t":
 				System.out.println("todo transaction");
 				break;
@@ -48,7 +35,27 @@ public class BankAccountMain
 				return;
 			}
 			
+			
 		}
 	}
 
+	private static void registerAccount()
+	{
+		while (true)
+		{
+			System.out.println("Would you like to register a checking account(c) or savings account(s)");
+			String answer1 =  in.nextLine();
+			
+			switch(answer1)
+			{
+			case "c":
+				
+				break;
+			case "s":
+				break;
+				
+			}
+			break;
+		}
+	}
 }
