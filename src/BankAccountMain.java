@@ -4,20 +4,19 @@ import java.util.Scanner;
 public class BankAccountMain 
 {
 	private static final double OVER_DRAFT_FEE = 15;
-	private double RATE = .0025;
+	private static double RATE = .0025;
 	private static final double TRANSACTION_FEE = 1.5;
 	private static final double MIN_BAL = 300;
 	private static final double MIN_BAL_FEE = 10;
-	private static final double FREE_TRANSACTIONS = 10;
-	
+	private static final int FREE_TRANSACTIONS = 10;
+	private static ArrayList<BankAccount> bankAccounts = new ArrayList<BankAccount>();
 	private static Scanner in;
 	
 	public static void main(String[] args) 
 	{
-		ArrayList<BankAccount> bank = new ArrayList<BankAccount>();
 		in = new Scanner(System.in);
-		
-		while (true)
+		boolean contRunning = true;
+		while (contRunning)
 		{
 			System.out.println("Would you like to register an account (r), make  a transaction (t), or quit?");
 			String answer = in.nextLine();
@@ -41,7 +40,7 @@ public class BankAccountMain
 
 	private static void registerAccount()
 	{
-		while (true)
+		while (true)//Change
 		{
 			System.out.println("Would you like to register a checking account(c) or savings account(s)");
 			String answer1 =  in.nextLine();
@@ -49,9 +48,14 @@ public class BankAccountMain
 			switch(answer1)
 			{
 			case "c":
-				
+				System.out.println("What would you like the name of your account to be?");
+				String answer2 = in.nextLine();
+				bankAccounts.add(new CheckingAccount(answer2 , OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS));
 				break;
 			case "s":
+				System.out.println("What would you like the name of your account to be?");
+				String answer3 = in.nextLine();
+				bankAccounts.add(new SavingsAccount(answer3, RATE, MIN_BAL, MIN_BAL_FEE));
 				break;
 				
 			}
