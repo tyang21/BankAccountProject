@@ -40,7 +40,8 @@ public class BankAccountMain
 
 	private static void registerAccount()
 	{
-		while (true)//Change
+		boolean reg = true;
+		while (reg)
 		{
 			System.out.println("Would you like to register a checking account(c) or savings account(s)");
 			String answer1 =  in.nextLine();
@@ -51,15 +52,16 @@ public class BankAccountMain
 				System.out.println("What would you like the name of your account to be?");
 				String answer2 = in.nextLine();
 				bankAccounts.add(new CheckingAccount(answer2 , OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS));
+				reg = false;
 				break;
 			case "s":
 				System.out.println("What would you like the name of your account to be?");
 				String answer3 = in.nextLine();
 				bankAccounts.add(new SavingsAccount(answer3, RATE, MIN_BAL, MIN_BAL_FEE));
+				reg = false;
 				break;
-				
 			}
-			break;
+			System.out.println("Please try again!");
 		}
 	}
 }
