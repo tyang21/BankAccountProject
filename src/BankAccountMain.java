@@ -27,7 +27,7 @@ public class BankAccountMain
 				registerAccount();
 				break;
 			case "t":
-				System.out.println("todo transaction");
+				transactionAccount();
 				break;
 				
 			case "q":
@@ -61,7 +61,32 @@ public class BankAccountMain
 				reg = false;
 				break;
 			}
-			System.out.println("Please try again!");
+
+		}
+		
+	}
+	private static void transactionAccount()
+	{
+		boolean trans= true;
+		while(trans)
+		{
+			System.out.println("What is your account number?");
+			int answer4 = in.nextInt();
+			for(BankAccount a : bankAccounts)
+			{
+				if(answer4 == a.getAccountNum())
+				{
+					System.out.println("Would you like to Deposit(d), Withdraw(w), transfer(t) or get account numbers(a)?");
+					String answer2 = in.nextLine();
+					switch(answer2)
+					{
+					case "d":
+						
+					}
+				}
+			}
+			
+		
 		}
 	}
 }
