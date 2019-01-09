@@ -122,10 +122,10 @@ public class BankAccountMain
 					while (dep)
 					{
 						System.out.println("How much do you want to deposit?(Can be 0)");
-						String depans = in.nextLine();
-						if(isNumeric(depans))
+						String depAns = in.nextLine();
+						if(isNumeric(depAns))
 						{
-							amt = Double.parseDouble(depans);
+							amt = Double.parseDouble(depAns);
 							dep = false;
 							a.deposit(amt);
 						}
@@ -136,10 +136,10 @@ public class BankAccountMain
 					while (wit)
 					{
 						System.out.println("How much do you want to withdraw");
-						String witans = in.nextLine();
-						if(isNumeric(witans))
+						String witAns = in.nextLine();
+						if(isNumeric(witAns))
 						{
-							amt = Double.parseDouble(witans);
+							amt = Double.parseDouble(witAns);
 							wit = false;
 							a.withdraw(amt);
 						}
@@ -147,8 +147,8 @@ public class BankAccountMain
 					}
 				case"t":
 					BankAccount b = null;
-					boolean transacc = true;
-					while(transacc)
+					boolean transAcc = true;
+					while(transAcc)
 					{
 						int acct;
 						System.out.println("Which Account number do you want to transfer to?");
@@ -157,7 +157,7 @@ public class BankAccountMain
 						{
 							acct = (int) Double.parseDouble(ans5);
 							b = getAcctByNum(acct);
-							transacc = false;
+							transAcc = false;
 							
 						}
 					}
@@ -165,14 +165,35 @@ public class BankAccountMain
 					while(tra)
 					{
 						System.out.println("How much do you want to transfer?");
-						String transamt = in.nextLine();
-						if(isNumeric(transamt))
+						String transAmt = in.nextLine();
+						if(isNumeric(transAmt))
 						{
-							amt = Double.parseDouble(transamt);
+							amt = Double.parseDouble(transAmt);
 							a.transfer(b, amt);
 						}
 					}
 					break;
+				case "a":
+					BankAccount acctNum2;
+					boolean numCont = true;
+					while(numCont)
+					{
+						System.out.println("What is the account number you want to retrieve?");
+						String acctAns = in.nextLine();
+						if(isNumeric(acctAns))
+						{
+							acctNum2 = getAcctByNum((int) Double.parseDouble(acctAns));
+							if(acctNum2 == null)
+							{
+								boolean option = true;
+								while(option)
+								{
+									
+								}
+							}
+						}
+						
+					}
 				}
 				
 			}

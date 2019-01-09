@@ -1,4 +1,8 @@
-
+/** 
+ * Make Sure to have Java Comments
+ * @author tyang21
+ *
+ */
 public abstract class BankAccount 
 {
 	private static int nextAccNum;
