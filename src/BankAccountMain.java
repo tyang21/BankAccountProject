@@ -31,17 +31,35 @@ public class BankAccountMain
 				break;
 				
 			case "q":
-				return;
+				contRunning = false;
+				break;
 			}
 			
 			
 		}
 	}
 
+	private static boolean isNumeric(String str)
+	{
+		try
+		{
+				Double.parseDouble(str);
+				return true;
+		}
+		catch(IllegalArgumentException e)
+		{
+				return false;
+		}
+	}
+
 	private static void registerAccount()
 	{
-		boolean reg = true;
-		while (reg)
+		
+		System.out.println("What would you like the name of your account to be?");
+		String answer2 = in.nextLine();
+		
+		boolean cs = true;
+		while(cs)
 		{
 			System.out.println("Would you like to register a checking account(c) or savings account(s)");
 			String answer1 =  in.nextLine();
@@ -49,44 +67,127 @@ public class BankAccountMain
 			switch(answer1)
 			{
 			case "c":
-				System.out.println("What would you like the name of your account to be?");
-				String answer2 = in.nextLine();
+				
 				bankAccounts.add(new CheckingAccount(answer2 , OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS));
-				reg = false;
+				cs = false;
 				break;
 			case "s":
-				System.out.println("What would you like the name of your account to be?");
-				String answer3 = in.nextLine();
-				bankAccounts.add(new SavingsAccount(answer3, RATE, MIN_BAL, MIN_BAL_FEE));
-				reg = false;
+				bankAccounts.add(new SavingsAccount(answer2, RATE, MIN_BAL, MIN_BAL_FEE));
+				cs = false;
 				break;
 			}
-
+		}
+		double amt;
+		boolean dep = true;
+		while (dep)
+		{
+			System.out.println("How much do you want to initially deposit?(Can be 0)");
+			String depans = in.nextLine();
+			if(isNumeric(depans))
+			{
+				amt = Double.parseDouble(depans);
+				dep = false;
+				
+			}
+			
 		}
 		
 	}
 	private static void transactionAccount()
 	{
-		boolean trans= true;
-		while(trans)
+		BankAccount a = null;
+		boolean num = true;
+		while(num)
 		{
+			int acct;
 			System.out.println("What is your account number?");
-			int answer4 = in.nextInt();
-			for(BankAccount a : bankAccounts)
+			String answer4 = in.nextLine();
+			if(isNumeric(answer4))
 			{
-				if(answer4 == a.getAccountNum())
+				 acct =(int) Double.parseDouble(answer4);
+				 a = getAcctByNum(acct);
+				 num = false;
+			}
+		}
+			boolean trans = true;
+			while(trans)
+			{
+				double amt;
+				System.out.println("Would you like to Deposit(d), Withdraw(w), transfer(t) or get account numbers(a)?");
+				String answer2 = in.nextLine();
+				switch(answer2)
 				{
-					System.out.println("Would you like to Deposit(d), Withdraw(w), transfer(t) or get account numbers(a)?");
-					String answer2 = in.nextLine();
-					switch(answer2)
+				case "d":
+					boolean dep = true;
+					while (dep)
 					{
-					case "d":
-						
+						System.out.println("How much do you want to deposit?(Can be 0)");
+						String depans = in.nextLine();
+						if(isNumeric(depans))
+						{
+							amt = Double.parseDouble(depans);
+							dep = false;
+							a.deposit(amt);
+						}
 					}
+					break;
+				case "w":
+					boolean wit = true;
+					while (wit)
+					{
+						System.out.println("How much do you want to withdraw");
+						String witans = in.nextLine();
+						if(isNumeric(witans))
+						{
+							amt = Double.parseDouble(witans);
+							wit = false;
+							a.withdraw(amt);
+						}
+						break;
+					}
+				case"t":
+					BankAccount b = null;
+					boolean transacc = true;
+					while(transacc)
+					{
+						int acct;
+						System.out.println("Which Account number do you want to transfer to?");
+						String ans5 = in.nextLine();
+						if(isNumeric(ans5))
+						{
+							acct = (int) Double.parseDouble(ans5);
+							b = getAcctByNum(acct);
+							transacc = false;
+							
+						}
+					}
+					boolean tra = true;
+					while(tra)
+					{
+						System.out.println("How much do you want to transfer?");
+						String transamt = in.nextLine();
+						if(isNumeric(transamt))
+						{
+							amt = Double.parseDouble(transamt);
+							a.transfer(b, amt);
+						}
+					}
+					break;
 				}
+				
 			}
 			
-		
+	}
+	private static BankAccount getAcctByNum(int n)
+	{
+		for(BankAccount a : bankAccounts)
+		{
+			if (n == a.getAccountNum())
+			{
+				return a;
+			}
 		}
+		return null;
+		
 	}
 }
