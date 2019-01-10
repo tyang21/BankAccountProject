@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class BankAccountMain 
 {
 	private static final double OVER_DRAFT_FEE = 15;
-	private static double RATE = .0025;
+	private static final double RATE = .0025;
 	private static final double TRANSACTION_FEE = 1.5;
 	private static final double MIN_BAL = 300;
 	private static final double MIN_BAL_FEE = 10;
@@ -54,7 +54,7 @@ public class BankAccountMain
 
 	private static void registerAccount()
 	{
-		
+		BankAccount a = null;
 		System.out.println("What would you like the name of your account to be?");
 		String answer2 = in.nextLine();
 		
@@ -68,47 +68,49 @@ public class BankAccountMain
 			{
 			case "c":
 				
-				bankAccounts.add(new CheckingAccount(answer2 , OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS));
+				double amt = -1;
+				boolean dep = true;
+				while (dep)
+				{
+					System.out.println("How much do you want to initially deposit?(Can be 0)");
+					String depans = in.nextLine();
+					if(isNumeric(depans))
+					{
+						amt = Double.parseDouble(depans);
+						dep = false;
+					}
+				}
+				BankAccount s = new CheckingAccount(answer2 , amt, OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS);
+				bankAccounts.add(s);
+				System.out.println(s.toString());
 				cs = false;
+				
 				break;
 			case "s":
-				bankAccounts.add(new SavingsAccount(answer2, RATE, MIN_BAL, MIN_BAL_FEE));
+				double amt1 = -1;
+				boolean dep1 = true;
+				while (dep1)
+				{
+					System.out.println("How much do you want to initially deposit?(Can be 0)");
+					String depans = in.nextLine();
+					if(isNumeric(depans))
+					{
+						amt1 = Double.parseDouble(depans);
+						dep1 = false;
+					}
+				}
+				BankAccount d = new SavingsAccount(answer2, amt1, RATE, MIN_BAL, MIN_BAL_FEE);
+				bankAccounts.add(d);
+				System.out.println(d.toString());
 				cs = false;
 				break;
 			}
 		}
-		double amt;
-		boolean dep = true;
-		while (dep)
-		{
-			System.out.println("How much do you want to initially deposit?(Can be 0)");
-			String depans = in.nextLine();
-			if(isNumeric(depans))
-			{
-				amt = Double.parseDouble(depans);
-				dep = false;
-				
-			}
-			
-		}
+		
 		
 	}
 	private static void transactionAccount()
 	{
-		BankAccount a = null;
-		boolean num = true;
-		while(num)
-		{
-			int acct;
-			System.out.println("What is your account number?");
-			String answer4 = in.nextLine();
-			if(isNumeric(answer4))
-			{
-				 acct =(int) Double.parseDouble(answer4);
-				 a = getAcctByNum(acct);
-				 num = false;
-			}
-		}
 			boolean trans = true;
 			while(trans)
 			{
@@ -118,6 +120,64 @@ public class BankAccountMain
 				switch(answer2)
 				{
 				case "d":
+					BankAccount acctNum2 = null;
+					boolean numCont = true;
+					while(numCont)
+					{
+						System.out.println("What is the account number you want to retrieve?");
+						String acctAns = in.nextLine();
+						if(isNumeric(acctAns))
+						{
+							acctNum2 = getAcctByNum((int) Double.parseDouble(acctAns));
+							numCont = false;
+							if(acctNum2 == null)
+							{
+								boolean option = true;
+								while(option)
+								{
+									System.out.println("I'm Sorry, that account number is invalid, would you like to try again(r) or enter your account name(n)");
+									String retry = in.nextLine();
+									switch(retry)
+									{
+									case "r":
+										option = false;
+										numCont = true;
+										break;
+									case "n":
+										option = false;
+										System.out.println("What is the name of the owner of the accounts?");
+										String name_ = in.nextLine();
+										for(BankAccount c : bankAccounts)
+										{
+											if(c.getName().equals(name_))
+											{
+												if(c instanceof CheckingAccount)
+												{
+													System.out.println("\n" + c.toString() + " CheckingAccount");
+												}
+												else if(c instanceof SavingsAccount)
+												{
+													System.out.println("\n" + c.toString() + " SavingsAccount");
+												}
+												
+											}
+											else
+											{
+												System.out.println("Im Sorry, there is no account number associated to this name");
+												option = true;
+											}
+										}
+										break;
+										
+										
+									
+										
+									}	
+								}
+							}
+						
+						}
+					}
 					boolean dep = true;
 					while (dep)
 					{
@@ -127,11 +187,80 @@ public class BankAccountMain
 						{
 							amt = Double.parseDouble(depAns);
 							dep = false;
-							a.deposit(amt);
+							try
+							{
+								acctNum2.deposit(amt);
+							}
+							catch(Exception e)
+							{
+								System.out.println(acctNum2.toString());
+								System.out.println("Transaction not authorized");
+							}
+							
 						}
 					}
 					break;
 				case "w":
+					BankAccount acctNum3 = null;
+					boolean numCont3 = true;
+					while(numCont3)
+					{
+						System.out.println("What is the account number you want to retrieve?");
+						String acctAns = in.nextLine();
+						if(isNumeric(acctAns))
+						{
+							acctNum3 = getAcctByNum((int) Double.parseDouble(acctAns));
+							numCont3 = false;
+							if(acctNum3 == null)
+							{
+								boolean option = true;
+								while(option)
+								{
+									System.out.println("I'm Sorry, that account number is invalid, would you like to try again(r) or enter your account name(n)");
+									String retry = in.nextLine();
+									switch(retry)
+									{
+									case "r":
+										option = false;
+										numCont3 = true;
+										break;
+									case "n":
+										option = false;
+										System.out.println("What is the name of the owner of the accounts?");
+										String name_ = in.nextLine();
+										for(BankAccount c : bankAccounts)
+										{
+											System.out.println(c.toString());
+											if(c.getName().equals(name_))
+											{
+												c.toString();
+												if(c instanceof CheckingAccount)
+												{
+													System.out.println("\n" + c.toString() + "CheckingAccount");
+												}
+												else if(c instanceof SavingsAccount)
+												{
+													System.out.println("\n" + c.toString() + "SavingsAccount");
+												}
+												
+											}
+											else
+											{
+												System.out.println("Im Sorry, there is no account number associated to this name");
+												option = true;
+											}
+										}
+										break;
+										
+										
+									
+										
+									}	
+								}
+							}
+						
+						}
+					}
 					boolean wit = true;
 					while (wit)
 					{
@@ -141,11 +270,75 @@ public class BankAccountMain
 						{
 							amt = Double.parseDouble(witAns);
 							wit = false;
-							a.withdraw(amt);
+							try
+							{
+								acctNum3.withdraw(amt);
+							}
+							catch(Exception e)
+							{
+								System.out.println("Transaction not authorized");
+							}
 						}
-						break;
 					}
+					break;
 				case"t":
+					BankAccount acctNum = null;
+					boolean numCont2 = true;
+					while(numCont2)
+					{
+						System.out.println("What is the account number you want to retrieve?");
+						String acctAns = in.nextLine();
+						if(isNumeric(acctAns))
+						{
+							acctNum = getAcctByNum((int) Double.parseDouble(acctAns));
+							numCont2 = false;
+							if(acctNum == null)
+							{
+								boolean option = true;
+								while(option)
+								{
+									System.out.println("I'm Sorry, that account number is invalid, would you like to try again(r) or enter your account name(n)");
+									String retry = in.nextLine();
+									switch(retry)
+									{
+									case "r":
+										option = false;
+										numCont2 = true;
+										break;
+									case "n":
+										option = false;
+										System.out.println("What is the name of the owner of the accounts?");
+										String name_ = in.nextLine();
+										for(BankAccount c : bankAccounts)
+										{
+											if(c.getName().equals(name_))
+											{
+												if(c instanceof CheckingAccount)
+												{
+													System.out.println("\n" + c.toString() + "CheckingAccount");
+												}
+												else if(c instanceof SavingsAccount)
+												{
+													System.out.println("\n" + c.toString() + "SavingsAccount");
+												}
+											}
+											else
+											{
+												System.out.println("Im Sorry, there is no account number associated to this name");
+												option = true;
+											}
+										}
+										break;
+										
+										
+									
+										
+									}	
+								}
+							}
+						
+						}
+					}
 					BankAccount b = null;
 					boolean transAcc = true;
 					while(transAcc)
@@ -169,33 +362,77 @@ public class BankAccountMain
 						if(isNumeric(transAmt))
 						{
 							amt = Double.parseDouble(transAmt);
-							a.transfer(b, amt);
+							try
+							{
+								acctNum.transfer(b, amt);
+							}
+							catch(Exception e)
+							{
+								System.out.println("Transaction not authorized");
+							}
 						}
 					}
 					break;
 				case "a":
-					BankAccount acctNum2;
-					boolean numCont = true;
-					while(numCont)
+					BankAccount acctNum4;
+					boolean numCont4 = true;
+					while(numCont4)
 					{
 						System.out.println("What is the account number you want to retrieve?");
 						String acctAns = in.nextLine();
 						if(isNumeric(acctAns))
 						{
-							acctNum2 = getAcctByNum((int) Double.parseDouble(acctAns));
-							if(acctNum2 == null)
+							acctNum4 = getAcctByNum((int) Double.parseDouble(acctAns));
+							numCont4 = false;
+							if(acctNum4 == null)
 							{
 								boolean option = true;
 								while(option)
 								{
+									System.out.println("I'm Sorry, that account number is invalid, would you like to try again(r) or enter your account name(n)");
+									String retry = in.nextLine();
+									switch(retry)
+									{
+									case "r":
+										option = false;
+										numCont4 = true;
+										break;
+									case "n":
+										option = false;
+										System.out.println("What is the name of the owner of the accounts?");
+										String name_ = in.nextLine();
+										for(BankAccount c : bankAccounts)
+										{
+											if(c.getName().equals(name_))
+											{
+												if(c instanceof CheckingAccount)
+												{
+													System.out.println("\n" + c.toString() + "CheckingAccount");
+												}
+												else if(c instanceof SavingsAccount)
+												{
+													System.out.println("\n" + c.toString() + "SavingsAccount");
+												}
+											}
+											else
+											{
+												System.out.println("Im Sorry, there is no account number associated to this name");
+												option = true;
+											}
+										}
+										break;
+										
+										
 									
+										
+									}	
 								}
 							}
-						}
 						
+						}
 					}
+					break;
 				}
-				
 			}
 			
 	}
@@ -211,4 +448,5 @@ public class BankAccountMain
 		return null;
 		
 	}
+	
 }
