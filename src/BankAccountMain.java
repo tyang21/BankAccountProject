@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * Bank Account Project
+ * @author Tyler Yang
+ * Period 7
+ */
 public class BankAccountMain 
 {
 	private static final double OVER_DRAFT_FEE = 15;
@@ -38,7 +42,11 @@ public class BankAccountMain
 			
 		}
 	}
-
+	/**
+	 * Checks if the String is numeric
+	 * @param str This is the string the method is checking to see if it is numeric
+	 * @return boolean This returns true if the value is numeric, false if the value is not
+	 */
 	private static boolean isNumeric(String str)
 	{
 		try
@@ -51,7 +59,10 @@ public class BankAccountMain
 				return false;
 		}
 	}
-
+/**
+ * This method is used when the user asks to register an account. The user can register a Checking or savings account.
+ * The method also asks for the owner name of the account and how much the user wants to initially deposit.
+ */
 	private static void registerAccount()
 	{
 		BankAccount a = null;
@@ -80,9 +91,17 @@ public class BankAccountMain
 						dep = false;
 					}
 				}
-				BankAccount s = new CheckingAccount(answer2 , amt, OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS);
-				bankAccounts.add(s);
-				System.out.println(s.toString());
+				try
+				{
+					BankAccount s = new CheckingAccount(answer2 , OVER_DRAFT_FEE,TRANSACTION_FEE, FREE_TRANSACTIONS);
+					s.deposit(amt);
+					bankAccounts.add(s);
+					System.out.println(s.toString());
+				}
+				catch(Exception e)
+				{
+					System.out.println("Deposit not authorized, Try to register the Account again.");
+				}
 				cs = false;
 				
 				break;
@@ -99,16 +118,33 @@ public class BankAccountMain
 						dep1 = false;
 					}
 				}
-				BankAccount d = new SavingsAccount(answer2, amt1, RATE, MIN_BAL, MIN_BAL_FEE);
-				bankAccounts.add(d);
-				System.out.println(d.toString());
+				
+				
+				try
+				{
+					BankAccount d = new SavingsAccount(answer2, RATE, MIN_BAL, MIN_BAL_FEE);
+					d.deposit(amt1);
+					bankAccounts.add(d);
+					System.out.println(d.toString());
+				}
+				catch(Exception e)
+				{
+					System.out.println("Deposit not authorized, Try registering the account again");
+				}
+				
 				cs = false;
+				
 				break;
 			}
 		}
 		
 		
 	}
+	/**
+	 * This method is used when the User wants to do some sort of transaction. The user can deposit, withdraw, transfer or retrieve their account numbers.
+	 * For each of the transactions, the user is also prompted for which number they want to do the transaction from.
+	 * If the user does not know their account number, they can find their account by the owner name
+	 */
 	private static void transactionAccount()
 	{
 			boolean trans = true;
@@ -180,6 +216,10 @@ public class BankAccountMain
 							}
 						
 						}
+						else
+						{
+							System.out.println("Please Try Again");
+						}
 					}
 					boolean dep = true;
 					while (dep)
@@ -233,17 +273,15 @@ public class BankAccountMain
 										String name_ = in.nextLine();
 										for(BankAccount c : bankAccounts)
 										{
-											System.out.println(c.toString());
 											if(c.getName().equals(name_))
 											{
-												c.toString();
 												if(c instanceof CheckingAccount)
 												{
-													System.out.println("\n" + c.toString() + "CheckingAccount");
+													System.out.println("\n" + c.toString() + "	CheckingAccount");
 												}
 												else if(c instanceof SavingsAccount)
 												{
-													System.out.println("\n" + c.toString() + "SavingsAccount");
+													System.out.println("\n" + c.toString() + "	SavingsAccount");
 												}
 												
 											}
@@ -267,11 +305,15 @@ public class BankAccountMain
 							}
 						
 						}
+						else
+						{
+							System.out.println("Please Try Again");
+						}
 					}
 					boolean wit = true;
 					while (wit)
 					{
-						System.out.println("How much do you want to withdraw");
+						System.out.println("How much do you want to withdraw?");
 						String witAns = in.nextLine();
 						if(isNumeric(witAns))
 						{
@@ -323,11 +365,11 @@ public class BankAccountMain
 											{
 												if(c instanceof CheckingAccount)
 												{
-													System.out.println("\n" + c.toString() + "CheckingAccount");
+													System.out.println("\n" + c.toString() + "	CheckingAccount");
 												}
 												else if(c instanceof SavingsAccount)
 												{
-													System.out.println("\n" + c.toString() + "SavingsAccount");
+													System.out.println("\n" + c.toString() + "	SavingsAccount");
 												}
 											}
 											else
@@ -384,11 +426,11 @@ public class BankAccountMain
 											{
 												if(c instanceof CheckingAccount)
 												{
-													System.out.println("\n" + c.toString() + "CheckingAccount");
+													System.out.println("\n" + c.toString() + "	CheckingAccount");
 												}
 												else if(c instanceof SavingsAccount)
 												{
-													System.out.println("\n" + c.toString() + "SavingsAccount");
+													System.out.println("\n" + c.toString() + "	SavingsAccount");
 												}
 											}
 											else
@@ -437,71 +479,44 @@ public class BankAccountMain
 					}
 					break;
 				case "a":
-					BankAccount acctNum4;
-					trans = false;
-					boolean numCont4 = true;
-					while(numCont4)
-					{
-						System.out.println("What is the account number you want to retrieve?");
-						String acctAns = in.nextLine();
-						if(isNumeric(acctAns))
+					boolean option = true;
+					while(option)
+					{		
+						System.out.println("What is the name of the owner of the accounts?");
+						String name_ = in.nextLine();
+						for(BankAccount c : bankAccounts)
 						{
-							acctNum4 = getAcctByNum((int) Double.parseDouble(acctAns));
-							if(acctNum4 == null)
+							if(c.getName().equals(name_))
 							{
-								boolean option = true;
-								while(option)
+								if(c instanceof CheckingAccount)
 								{
-									System.out.println("I'm Sorry, that account number is invalid, would you like to try again(r) or enter your account name(n)");
-									String retry = in.nextLine();
-									switch(retry)
-									{
-									case "r":
-										option = false;
-										break;
-									case "n":
-										option = false;
-										System.out.println("What is the name of the owner of the accounts?");
-										String name_ = in.nextLine();
-										for(BankAccount c : bankAccounts)
-										{
-											if(c.getName().equals(name_))
-											{
-												if(c instanceof CheckingAccount)
-												{
-													System.out.println("\n" + c.toString() + "CheckingAccount");
-												}
-												else if(c instanceof SavingsAccount)
-												{
-													System.out.println("\n" + c.toString() + "SavingsAccount");
-												}
-											}
-											else
-											{
-												System.out.println("Im Sorry, there is no account number associated to this name");
-												option = true;
-											}
-										}
-										break;
-										
-										
-									
-										
-									}	
+									System.out.println("\n" + c.toString() + "	CheckingAccount");
+									option = false;
+								}
+								else if(c instanceof SavingsAccount)
+								{
+									System.out.println("\n" + c.toString() + "	SavingsAccount");
+									option = false;
 								}
 							}
 							else
 							{
-								numCont4 = false;
+								System.out.println("Im Sorry, there is no account number associated to this name");
+								option = true;
 							}
 						
+							}
 						}
-					}
 					break;
 				}
 			}
-			
-	}
+	}	
+	/**
+	 * This method finds an account in the array list based on the account number
+	 * @param n This is the account number that is going to be found within the Bank Account array list
+	 * @return int The Account associated with the account number
+	 * @return null if the account associated could not be found within the arraylist
+	 */
 	private static BankAccount getAcctByNum(int n)
 	{
 		for(BankAccount a : bankAccounts)

@@ -11,8 +11,8 @@ public abstract class BankAccount
 	private int acctNum;
 	private double balance;
 	/**
-	 * Base Bank Account constructor
-	 * @param name
+	 * Constructs a Bank Account that automatically sets the initial balance to 0.
+	 * @param n This is the owner of the Bank Account. 
 	 */
 	public BankAccount(String n)
 	{
@@ -22,9 +22,9 @@ public abstract class BankAccount
 		nextAccNum++;
 	}
 	/**
-	 * Bank Account Constructor that also includes a initial balance
-	 * @param name
-	 * @param initial balance
+	 * Constructs a Bank Account that includes an initial balance that the user inputs
+	 * @param n This is the owner of the BankAccount. 
+	 * @param b This is the initial balance the user wants to input in the Bank Account. 
 	 */
 	public BankAccount(String n, double b)
 	{
@@ -34,8 +34,8 @@ public abstract class BankAccount
 		balance = b;
 	}
 	/**
-	 * Deposit money into Bank Account
-	 * @param amount to deposit
+	 * This deposits money into Bank Account
+	 * @param amt This is the amount the user wants to deposit into the bank account. 
 	 */
 	public void deposit(double amt)
 	{
@@ -43,34 +43,34 @@ public abstract class BankAccount
 	}
 	/**
 	 * Withdraw money from Bank Account object
-	 * @param amount to withdraw
+	 * @param amt This is the amount the user wants to withdraw from the Bank Account. 
 	 */
 	public void withdraw(double amt)
 	{
 		balance -= amt;
 	}
 	/**
-	 * @return name
+	 * @return String This returns the BankAccount's owner.
 	 */
 	public String getName()
 	{
 		return name;
 	}
 	/**
-	 * @return balance
+	 * @return int This returns the BankAccount's balance.
 	 */
 	public double getBalance()
 	{
 		return balance;
 	}
 	/**
-	 * Abstract end of Month Update method to be implemented in Subclasses
+	 * Abstract Method. Updates information at the end of the month, to be implemented in the Savings and CheckingAccount method
 	 */
 	public abstract void endOfMonthUpdate();
 	/**
 	 * Transfer money from one bank account to another
-	 * @param Bank account to transfer money too
-	 * @param amount of money to transfer
+	 * @param other This is the Bank account money is being transfered to.
+	 * @param amt This is the amount of money to that is being transfered. 
 	 */
 	public void transfer(BankAccount other, double amt)
 	{
@@ -78,12 +78,16 @@ public abstract class BankAccount
 		other.deposit(amt);
 	}
 	/**
-	 * displays Bank Account format ( Account Number, Name, Balance)
+	 * @return String This displays the bank account in the format account number, owner of the account, balance of the account)
 	 */
 	public String toString()
 	{
-		return(acctNum + "    " + name + "    " + "$" + balance);
+		return("Account Number:" + acctNum + "	Owner:    " + name + "    " + "	Balance:	$" + balance);
 	}
+	/**
+	 * 
+	 * @return int This returns the account number of the Bank Account Object
+	 */
 	public int getAccountNum()
 	{
 		return acctNum;
